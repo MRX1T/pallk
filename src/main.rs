@@ -1,6 +1,6 @@
 use std::env::args;
 use std::process::{Command, exit};
-use libc::{c_int, kill, SIGTERM};
+use libc::{kill, SIGTERM};
 
 
 // pallk - Kill !ALL! process
@@ -14,7 +14,7 @@ fn main() {
     for arg in &args[1..] {
         match arg.as_str() {
             "h" | "help" | "-h" | "-help" | "--help" => help(),
-            other => {
+            _ => {
                 if let Ok(sig) = arg.parse() { signal = sig }
                 else {
                     eprintln!("pallk: unknown option: {}", arg);
@@ -31,7 +31,7 @@ fn main() {
         .unwrap()
         .stdout;
     let output = String::from_utf8(raw_output).unwrap();
-    let vector = (output.split('\n')); // [0] is "PID"
+    let vector = output.split('\n'); // [0] is "PID"
     unsafe {
         for str_pid in vector {
             if let Ok(pid) = str_pid.parse() {
