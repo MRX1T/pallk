@@ -1,0 +1,1 @@
+# pallk - Kill ALL processes
